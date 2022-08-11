@@ -12,10 +12,10 @@ import java.util.logging.Logger;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.*;
+
 
 public class HttpResponseTests extends TestSetup {
-
-    private final Logger logger = Logger.getLogger(HttpResponseTests.class.getName());
 
     @BeforeMethod
     public void setUp() {
@@ -29,7 +29,7 @@ public class HttpResponseTests extends TestSetup {
                 .when()
                 .get("/users")
                 .andReturn();
-        assertTrue(response.getHeader("Content-Type").length() > 0);
+        assertThat(response.getHeader("Content-Type").length() > 0).isTrue();
     }
 
     @Test
@@ -39,8 +39,6 @@ public class HttpResponseTests extends TestSetup {
                 .when()
                 .get("/users")
                 .andReturn();
-        String actualResponseHeader = response.getHeader("Content-Type");
-        logger.log(Level.INFO, String.valueOf(response.getHeader("Content-Type")));
-        assertEquals(actualResponseHeader, "application/json; charset=utf-8");
+        assertThat(response.getHeader("Content-Type")).isEqualTo("application/json; charset=utf-8");
     }
 }
