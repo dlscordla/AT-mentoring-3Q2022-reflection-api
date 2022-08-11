@@ -11,7 +11,6 @@ import java.util.Arrays;
 
 public class TestListener implements ITestListener {
 
-    String className;
     Method[] tests;
 
     public void onTestStart(ITestResult result) {
@@ -39,10 +38,12 @@ public class TestListener implements ITestListener {
 
     public void onFinish(ITestContext context) {
         getUiTestsInfo();
-        getUiTestsNumber();
     }
 
     private void getUiTestsInfo() {
+        int counter = 0;
+        String className = null;
+
         for (Method test : tests) {
             if (test.isAnnotationPresent(UITests.class)) {
                 System.out.println(
@@ -50,15 +51,6 @@ public class TestListener implements ITestListener {
                                 "UI Test Method name: " + test.getName() + "\n" +
                                 "UI Test Annotations: " + Arrays.toString(test.getDeclaredAnnotations())
                 );
-            }
-        }
-    }
-
-    private void getUiTestsNumber() {
-        int counter = 0;
-
-        for (Method test : tests) {
-            if (test.isAnnotationPresent(UITests.class)) {
                 counter++;
                 className = test.getDeclaringClass().toString();
             } else if (test.isAnnotationPresent(APITests.class)) {
