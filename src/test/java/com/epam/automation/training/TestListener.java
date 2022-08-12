@@ -1,9 +1,9 @@
 package com.epam.automation.training;
 
-import com.epam.automation.training.annotations.CustomAnnotations.APITests;
 import com.epam.automation.training.annotations.CustomAnnotations.UITests;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
+import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 
 import java.lang.reflect.Method;
@@ -11,10 +11,7 @@ import java.util.Arrays;
 
 public class TestListener implements ITestListener {
 
-    Method[] tests;
-
     public void onTestStart(ITestResult result) {
-        tests = result.getTestClass().getRealClass().getMethods();
     }
 
     public void onTestSuccess(ITestResult result) {
@@ -37,27 +34,20 @@ public class TestListener implements ITestListener {
     }
 
     public void onFinish(ITestContext context) {
-        getUiTestsInfo();
-    }
-
-    private void getUiTestsInfo() {
         int counter = 0;
-        String className = null;
+        ITestNGMethod[] testNGMethods = context.getAllTestMethods();
 
-        for (Method test : tests) {
+        for (ITestNGMethod testNGMethod : testNGMethods) {
+            Method test = testNGMethod.getConstructorOrMethod().getMethod();
             if (test.isAnnotationPresent(UITests.class)) {
                 System.out.println(
-                        "UI Test Class: " + test.getDeclaringClass() + "\n" +
+                        test.getDeclaringClass() + "\n" +
                                 "UI Test Method name: " + test.getName() + "\n" +
                                 "UI Test Annotations: " + Arrays.toString(test.getDeclaredAnnotations())
                 );
                 counter++;
-                className = test.getDeclaringClass().toString();
-            } else if (test.isAnnotationPresent(APITests.class)) {
-                System.out.println(test.getName() + " is not related to UI");
-                className = test.getDeclaringClass().toString();
             }
         }
-        System.out.println("The number of UI tests in the " + className + " is equal to " + counter);
+        System.out.println("The number of UI tests in the Suite is equal to " + counter);
     }
 }

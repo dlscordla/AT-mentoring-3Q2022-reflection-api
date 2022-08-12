@@ -1,17 +1,9 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 <suite name="Test Suite">
-    <test name="API Tests">
+    <test name="UI and API Tests">
         <classes>
             <class name="com.epam.automation.training.api.HttpResponseTests"/>
-        </classes>
-    </test>
-    <test name="UI Tests">
-        <classes>
             <class name="com.epam.automation.training.ui.ButtonColorTests"/>
-        </classes>
-    </test>
-    <test name="Dummy Tests">
-        <classes>
             <class name="com.epam.automation.training.dummytests.DummyTests"/>
         </classes>
     </test>
